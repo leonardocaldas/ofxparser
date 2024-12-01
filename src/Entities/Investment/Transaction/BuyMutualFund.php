@@ -2,8 +2,6 @@
 
 namespace OfxParser\Entities\Investment\Transaction;
 
-use OfxParser\Entities\Investment\Transaction\Traits\BuyType;
-
 /**
  * OFX 203 doc:
  * 13.9.2.4.3 Investment Buy/Sell Aggregates <INVBUY>/<INVSELL>

@@ -2,10 +2,6 @@
 
 namespace OfxParser\Ofx;
 
-use SimpleXMLElement;
-use OfxParser\Ofx;
-use OfxParser\Utils;
-use OfxParser\Entities\Statement;
 use OfxParser\Entities\Investment\Account as InvestmentAccount;
 use OfxParser\Entities\Investment\Transaction\Banking;
 use OfxParser\Entities\Investment\Transaction\BuyMutualFund;
@@ -14,6 +10,10 @@ use OfxParser\Entities\Investment\Transaction\BuyStock;
 use OfxParser\Entities\Investment\Transaction\Income;
 use OfxParser\Entities\Investment\Transaction\Reinvest;
 use OfxParser\Entities\Investment\Transaction\SellMutualFund;
+use OfxParser\Entities\Statement;
+use OfxParser\Ofx;
+use OfxParser\Utils;
+use SimpleXMLElement;
 
 class Investment extends Ofx
 {

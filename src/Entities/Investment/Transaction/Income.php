@@ -2,13 +2,12 @@
 
 namespace OfxParser\Entities\Investment\Transaction;
 
-use SimpleXMLElement;
-use OfxParser\Entities\AbstractEntity;
 use OfxParser\Entities\Investment;
 use OfxParser\Entities\Investment\Transaction\Traits\IncomeType;
 use OfxParser\Entities\Investment\Transaction\Traits\InvTran;
 use OfxParser\Entities\Investment\Transaction\Traits\Pricing;
 use OfxParser\Entities\Investment\Transaction\Traits\SecId;
+use SimpleXMLElement;
 
 /**
  * OFX 203 doc:

@@ -2,11 +2,11 @@
 
 namespace OfxParser\Entities\Investment\Transaction;
 
-use SimpleXMLElement;
-use OfxParser\Utils;
 use OfxParser\Entities\Inspectable;
 use OfxParser\Entities\OfxLoadable;
 use OfxParser\Entities\Transaction as BaseTransaction;
+use OfxParser\Utils;
+use SimpleXMLElement;
 
 /**
  * Per OFX 203 doc, this is a wrapper for a <STMTTRN> node

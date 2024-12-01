@@ -2,9 +2,9 @@
 
 namespace OfxParser\Parsers;
 
+use OfxParser\Ofx\Investment as InvestmentOfx;
+use OfxParser\Parser;
 use SimpleXMLElement;
-use \OfxParser\Parser;
-use \OfxParser\Ofx\Investment as InvestmentOfx;
 
 class Investment extends Parser
 {

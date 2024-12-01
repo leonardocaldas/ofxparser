@@ -2,8 +2,6 @@
 
 namespace OfxParser;
 
-use SimpleXMLElement;
-
 /**
  * Utilities and helpers for conversion and parsing.
  */

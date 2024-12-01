@@ -45,7 +45,6 @@ To load investments from a Quicken (QFX) file or a MS Money (OFX / XML) file:
 
 ```php
 // You'll probably want to alias the namespace:
-use OfxParser\Entities\Investment as InvEntities;
 
 // Load the OFX file
 $ofxParser = new \OfxParser\Parsers\Investment();
@@ -69,7 +68,7 @@ foreach ($ofx->bankAccounts as $accountData) {
         }
 
         // Maybe you'll want to do something based on the entity:
-        if ($ofxEntity instanceof InvEntities\Transaction\BuyStock) {
+        if ($ofxEntity instanceof \OfxParser\Entities\Investment\Transaction\BuyStock) {
             // ...
         }
 

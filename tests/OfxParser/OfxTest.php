@@ -2,8 +2,8 @@
 
 namespace OfxParserTest;
 
-use PHPUnit\Framework\TestCase;
 use OfxParser\Ofx;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers OfxParser\Ofx

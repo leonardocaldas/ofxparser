@@ -2,27 +2,27 @@
 
 namespace OfxParser\Entities\Investment\Transaction;
 
+use OfxParser\Entities\Investment\Transaction\Traits\SellType;
 use SimpleXMLElement;
-use OfxParser\Entities\Investment\Transaction\Traits\BuyType;
 
 /**
  * OFX 203 doc:
  * 13.9.2.4.3 Investment Buy/Sell Aggregates <INVBUY>/<INVSELL>
  *
- * Properties found in the <INVBUY> aggregate,
- * plus <BUYTYPE> property.
+ * Properties found in the <INVSELL> aggregate,
+ * plus <SELLTYPE> property.
  */
-class BuyStock extends BuySecurity
+class SellStock extends SellSecurity
 {
     /**
      * Traits used to define properties
      */
-    use BuyType;
+    use SellType;
 
     /**
      * @var string
      */
-    public $nodeName = 'BUYSTOCK';
+    public $nodeName = 'SELLSTOCK';
 
     /**
      * Imports the OFX data for this node.
@@ -32,7 +32,7 @@ class BuyStock extends BuySecurity
     public function loadOfx(SimpleXMLElement $node)
     {
         parent::loadOfx($node);
-        $this->loadBuyType($node);
+        $this->loadSellType($node);
 
         return $this;
     }

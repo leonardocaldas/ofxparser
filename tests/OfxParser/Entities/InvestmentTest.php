@@ -2,9 +2,9 @@
 
 namespace OfxParserTest\Entities;
 
-use SimpleXMLElement;
-use PHPUnit\Framework\TestCase;
 use OfxParser\Entities\Investment;
+use PHPUnit\Framework\TestCase;
+use SimpleXMLElement;
 
 /**
  * Need to extend the abstract Investment entity to test it.

@@ -3,6 +3,7 @@
 namespace OfxParser\Entities\Investment;
 
 use OfxParser\Entities\Investment;
+use OfxParser\Entities\Investment\Statement;
 
 class Account extends Investment
 {

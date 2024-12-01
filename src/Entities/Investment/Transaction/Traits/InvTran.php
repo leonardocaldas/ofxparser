@@ -2,8 +2,8 @@
 
 namespace OfxParser\Entities\Investment\Transaction\Traits;
 
-use SimpleXMLElement;
 use OfxParser\Utils;
+use SimpleXMLElement;
 
 /**
  * OFX 203 doc:

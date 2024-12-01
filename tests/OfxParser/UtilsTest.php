@@ -2,8 +2,8 @@
 
 namespace OfxParserTest;
 
-use PHPUnit\Framework\TestCase;
 use OfxParser\Utils;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Fake class for DateTime callback.

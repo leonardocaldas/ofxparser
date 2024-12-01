@@ -2,8 +2,8 @@
 
 namespace OfxParser\Parsers;
 
-use PHPUnit\Framework\TestCase;
 use OfxParser\Parsers\Investment as InvestmentParser;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers OfxParser\Parsers\Investment

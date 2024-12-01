@@ -2,8 +2,6 @@
 
 namespace OfxParser;
 
-use SimpleXMLElement;
-use OfxParser\Utils;
 use OfxParser\Entities\AccountInfo;
 use OfxParser\Entities\BankAccount;
 use OfxParser\Entities\Institute;
@@ -11,6 +9,8 @@ use OfxParser\Entities\SignOn;
 use OfxParser\Entities\Statement;
 use OfxParser\Entities\Status;
 use OfxParser\Entities\Transaction;
+use OfxParser\Header;
+use SimpleXMLElement;
 
 /**
  * The OFX object
