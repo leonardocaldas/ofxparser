@@ -2,6 +2,7 @@
 
 namespace OfxParserTest\Entities;
 
+use Exception;
 use OfxParser\Entities\Investment;
 use PHPUnit\Framework\TestCase;
 use SimpleXMLElement;
@@ -58,12 +59,11 @@ class InvestmentValid extends InvestmentNoLoadOfx
  */
 class InvestmentTest extends TestCase
 {
-    /**
-     * @expectedException \Exception
-     */
     public function testLoadOfxException()
     {
-        $xml = new SimpleXMLElement('<xml></xml>');
+        $this->expectException(Exception::class);
+
+        $xml    = new SimpleXMLElement('<xml></xml>');
         $entity = new InvestmentNoLoadOfx();
         $entity->loadOfx($xml);
     }
@@ -73,7 +73,7 @@ class InvestmentTest extends TestCase
      */
     public function testLoadOfxValid()
     {
-        $xml = new SimpleXMLElement('<xml></xml>');
+        $xml    = new SimpleXMLElement('<xml></xml>');
         $entity = new InvestmentValid();
         $entity->loadOfx($xml);
         $this->assertTrue(true);
@@ -84,12 +84,12 @@ class InvestmentTest extends TestCase
      */
     public function testGetProperties()
     {
-        $expectedProps = array(
+        $expectedProps = [
             'public1',
             'protected1',
-        );
+        ];
 
-        $entity = new InvestmentValid();
+        $entity      = new InvestmentValid();
         $actualProps = $entity->getProperties();
 
         $this->assertSame($expectedProps, array_keys($actualProps));

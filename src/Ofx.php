@@ -9,7 +9,6 @@ use OfxParser\Entities\SignOn;
 use OfxParser\Entities\Statement;
 use OfxParser\Entities\Status;
 use OfxParser\Entities\Transaction;
-use OfxParser\Header;
 use SimpleXMLElement;
 
 /**
@@ -28,9 +27,6 @@ use SimpleXMLElement;
  */
 class Ofx
 {
-    /**
-     * @var Header[]
-     */
     public $header = [];
 
     /**
@@ -61,12 +57,12 @@ class Ofx
      */
     public function __construct(SimpleXMLElement $xml)
     {
-        $this->signOn = $this->buildSignOn($xml->SIGNONMSGSRSV1->SONRS);
+        $this->signOn            = $this->buildSignOn($xml->SIGNONMSGSRSV1->SONRS);
         $this->signupAccountInfo = $this->buildAccountInfo($xml->SIGNUPMSGSRSV1->ACCTINFOTRNRS);
 
         if (isset($xml->BANKMSGSRSV1)) {
             $this->bankAccounts = $this->buildBankAccounts($xml);
-        } elseif (isset($xml->CREDITCARDMSGSRSV1)) {
+        } else if (isset($xml->CREDITCARDMSGSRSV1)) {
             $this->bankAccounts = $this->buildCreditAccounts($xml);
         }
 
@@ -105,14 +101,14 @@ class Ofx
      */
     protected function buildSignOn(SimpleXMLElement $xml)
     {
-        $signOn = new SignOn();
-        $signOn->status = $this->buildStatus($xml->STATUS);
-        $signOn->date = Utils::createDateTimeFromStr($xml->DTSERVER, true);
+        $signOn           = new SignOn();
+        $signOn->status   = $this->buildStatus($xml->STATUS);
+        $signOn->date     = Utils::createDateTimeFromStr($xml->DTSERVER, true);
         $signOn->language = $xml->LANGUAGE;
 
-        $signOn->institute = new Institute();
+        $signOn->institute       = new Institute();
         $signOn->institute->name = $xml->FI->ORG;
-        $signOn->institute->id = $xml->FI->FID;
+        $signOn->institute->id   = $xml->FI->FID;
 
         return $signOn;
     }
@@ -129,10 +125,10 @@ class Ofx
 
         $accounts = [];
         foreach ($xml->ACCTINFO as $account) {
-            $accountInfo = new AccountInfo();
-            $accountInfo->desc = $account->DESC;
+            $accountInfo         = new AccountInfo();
+            $accountInfo->desc   = $account->DESC;
             $accountInfo->number = $account->ACCTID;
-            $accounts[] = $accountInfo;
+            $accounts[]          = $accountInfo;
         }
 
         return $accounts;
@@ -179,19 +175,19 @@ class Ofx
      */
     private function buildBankAccount($transactionUid, SimpleXMLElement $statementResponse)
     {
-        $bankAccount = new BankAccount();
+        $bankAccount                 = new BankAccount();
         $bankAccount->transactionUid = $transactionUid;
-        $bankAccount->agencyNumber = $statementResponse->BANKACCTFROM->BRANCHID;
-        $bankAccount->accountNumber = $statementResponse->BANKACCTFROM->ACCTID;
-        $bankAccount->routingNumber = $statementResponse->BANKACCTFROM->BANKID;
-        $bankAccount->accountType = $statementResponse->BANKACCTFROM->ACCTTYPE;
-        $bankAccount->balance = $statementResponse->LEDGERBAL->BALAMT;
-        $bankAccount->balanceDate = Utils::createDateTimeFromStr(
+        $bankAccount->agencyNumber   = $statementResponse->BANKACCTFROM->BRANCHID;
+        $bankAccount->accountNumber  = $statementResponse->BANKACCTFROM->ACCTID;
+        $bankAccount->routingNumber  = $statementResponse->BANKACCTFROM->BANKID;
+        $bankAccount->accountType    = $statementResponse->BANKACCTFROM->ACCTTYPE;
+        $bankAccount->balance        = $statementResponse->LEDGERBAL->BALAMT;
+        $bankAccount->balanceDate    = Utils::createDateTimeFromStr(
             $statementResponse->LEDGERBAL->DTASOF,
             true
         );
 
-        $bankAccount->statement = new Statement();
+        $bankAccount->statement           = new Statement();
         $bankAccount->statement->currency = $statementResponse->CURDEF;
 
         $bankAccount->statement->startDate = Utils::createDateTimeFromStr(
@@ -221,19 +217,19 @@ class Ofx
             $nodeName = 'BANKACCTFROM';
         }
 
-        $creditAccount = new BankAccount();
+        $creditAccount                 = new BankAccount();
         $creditAccount->transactionUid = $xml->TRNUID;
-        $creditAccount->agencyNumber = $xml->CCSTMTRS->$nodeName->BRANCHID;
-        $creditAccount->accountNumber = $xml->CCSTMTRS->$nodeName->ACCTID;
-        $creditAccount->routingNumber = $xml->CCSTMTRS->$nodeName->BANKID;
-        $creditAccount->accountType = $xml->CCSTMTRS->$nodeName->ACCTTYPE;
-        $creditAccount->balance = $xml->CCSTMTRS->LEDGERBAL->BALAMT;
-        $creditAccount->balanceDate = Utils::createDateTimeFromStr($xml->CCSTMTRS->LEDGERBAL->DTASOF, true);
+        $creditAccount->agencyNumber   = $xml->CCSTMTRS->$nodeName->BRANCHID;
+        $creditAccount->accountNumber  = $xml->CCSTMTRS->$nodeName->ACCTID;
+        $creditAccount->routingNumber  = $xml->CCSTMTRS->$nodeName->BANKID;
+        $creditAccount->accountType    = $xml->CCSTMTRS->$nodeName->ACCTTYPE;
+        $creditAccount->balance        = $xml->CCSTMTRS->LEDGERBAL->BALAMT;
+        $creditAccount->balanceDate    = Utils::createDateTimeFromStr($xml->CCSTMTRS->LEDGERBAL->DTASOF, true);
 
-        $creditAccount->statement = new Statement();
-        $creditAccount->statement->currency = $xml->CCSTMTRS->CURDEF;
-        $creditAccount->statement->startDate = Utils::createDateTimeFromStr($xml->CCSTMTRS->BANKTRANLIST->DTSTART);
-        $creditAccount->statement->endDate = Utils::createDateTimeFromStr($xml->CCSTMTRS->BANKTRANLIST->DTEND);
+        $creditAccount->statement               = new Statement();
+        $creditAccount->statement->currency     = $xml->CCSTMTRS->CURDEF;
+        $creditAccount->statement->startDate    = Utils::createDateTimeFromStr($xml->CCSTMTRS->BANKTRANLIST->DTSTART);
+        $creditAccount->statement->endDate      = Utils::createDateTimeFromStr($xml->CCSTMTRS->BANKTRANLIST->DTEND);
         $creditAccount->statement->transactions = $this->buildTransactions($xml->CCSTMTRS->BANKTRANLIST->STMTTRN);
 
         return $creditAccount;
@@ -248,19 +244,19 @@ class Ofx
     {
         $return = [];
         foreach ($transactions as $t) {
-            $transaction = new Transaction();
+            $transaction       = new Transaction();
             $transaction->type = (string)$t->TRNTYPE;
             $transaction->date = Utils::createDateTimeFromStr($t->DTPOSTED);
             if ('' !== (string)$t->DTUSER) {
                 $transaction->userInitiatedDate = Utils::createDateTimeFromStr($t->DTUSER);
             }
-            $transaction->amount = Utils::createAmountFromStr($t->TRNAMT);
-            $transaction->uniqueId = (string)$t->FITID;
-            $transaction->name = (string)$t->NAME;
-            $transaction->memo = (string)$t->MEMO;
-            $transaction->sic = $t->SIC;
+            $transaction->amount      = Utils::createAmountFromStr($t->TRNAMT);
+            $transaction->uniqueId    = (string)$t->FITID;
+            $transaction->name        = (string)$t->NAME;
+            $transaction->memo        = (string)$t->MEMO;
+            $transaction->sic         = $t->SIC;
             $transaction->checkNumber = $t->CHECKNUM;
-            $return[] = $transaction;
+            $return[]                 = $transaction;
         }
 
         return $return;
@@ -272,10 +268,10 @@ class Ofx
      */
     private function buildStatus(SimpleXMLElement $xml)
     {
-        $status = new Status();
-        $status->code = $xml->CODE;
+        $status           = new Status();
+        $status->code     = $xml->CODE;
         $status->severity = $xml->SEVERITY;
-        $status->message = $xml->MESSAGE;
+        $status->message  = $xml->MESSAGE;
 
         return $status;
     }
