@@ -50,10 +50,9 @@ class Parser
     public function loadFromString($ofxContent)
     {
         $ofxContent = str_replace(["\r\n", "\r"], "\n", $ofxContent);
-        $ofxContent = utf8_encode($ofxContent);
 
         $sgmlStart = stripos($ofxContent, '<OFX>');
-        $ofxHeader =  trim(substr($ofxContent, 0, $sgmlStart));
+        $ofxHeader = trim(substr($ofxContent, 0, $sgmlStart));
         $header = $this->parseHeader($ofxHeader);
 
         $ofxSgml = trim(substr($ofxContent, $sgmlStart));
@@ -124,11 +123,13 @@ class Parser
         // Matches: <SOMETHING>blah
         // Does not match: <SOMETHING>
         // Does not match: <SOMETHING>blah</SOMETHING>
-        if (preg_match(
-            "/<([A-Za-z0-9.]+)>([\wà-úÀ-Ú0-9\.\-\_\+\, ;:\[\]\'\&\/\\\*\(\)\+\{\|\}\!\£\$\?=@€£#%±§~`\"]+)$/",
-            $line,
-            $matches
-        )) {
+        if (
+            preg_match(
+                "/<([A-Za-z0-9.]+)>([\wà-úÀ-Ú0-9\.\-\_\+\, ;:\[\]\'\&\/\\\*\(\)\+\{\|\}\!\£\$\?=@€£#%±§~`\"]+)$/",
+                $line,
+                $matches
+            )
+        ) {
             return "<{$matches[1]}>{$matches[2]}</{$matches[1]}>";
         }
         return $line;
@@ -151,7 +152,7 @@ class Parser
         $ofxHeader = preg_replace('/^\n+/m', '', $ofxHeader);
 
         // Check if it's an XML file (OFXv2)
-        if(preg_match('/^<\?xml/', $ofxHeader) === 1) {
+        if (preg_match('/^<\?xml/', $ofxHeader) === 1) {
             // Only parse OFX headers and not XML headers.
             $ofxHeader = preg_replace('/<\?xml .*?\?>\n?/', '', $ofxHeader);
             $ofxHeader = preg_replace(['/"/', '/\?>/', '/<\?OFX/i'], '', $ofxHeader);
